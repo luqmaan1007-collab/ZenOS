@@ -1,4 +1,5 @@
 base
+syslinux
 linux
 linux-firmware
 amd-ucode
