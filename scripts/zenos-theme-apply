@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+command -v kwriteconfig6 >/dev/null || { echo "Run this from a KDE Plasma 6 session."; exit 1; }
+kwriteconfig6 --file kdeglobals --group General --key ColorScheme ZenGlass
+kwriteconfig6 --file kwinrc --group Plugins --key blurEnabled true
+kwriteconfig6 --file kwinrc --group Effect-blur --key BlurStrength 8
+kwriteconfig6 --file kwinrc --group Effect-blur --key NoiseStrength 0
+kwriteconfig6 --file kwinrc --group Effect-blur --key Saturation 1.35
+echo "ZenGlass colors and KWin blur settings applied. Log out and back in if some apps do not refresh."
