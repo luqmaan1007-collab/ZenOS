@@ -8,9 +8,12 @@ if command -v plasma-apply-wallpaperimage >/dev/null 2>&1; then
 fi
 if command -v kwriteconfig6 >/dev/null 2>&1; then
   kwriteconfig6 --file kdeglobals --group General --key ColorScheme ZenGlass
+  kwriteconfig6 --file kdeglobals --group General --key font "Noto Sans,10,-1,5,50,0,0,0,0,0"
+  kwriteconfig6 --file kdeglobals --group Icons --key Theme Papirus-Dark
   kwriteconfig6 --file kwinrc --group Plugins --key blurEnabled true
   kwriteconfig6 --file kwinrc --group Effect-blur --key BlurStrength 8
   kwriteconfig6 --file kwinrc --group Effect-blur --key NoiseStrength 0
   kwriteconfig6 --file kwinrc --group Effect-blur --key Saturation 1.35
 fi
 touch "$MARKER"
+if command -v zenos-welcome >/dev/null 2>&1; then zenos-welcome || true; fi
