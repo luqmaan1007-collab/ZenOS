@@ -58,7 +58,7 @@ jobs:
             ln -sf /usr/lib/systemd/system/firewalld.service profile/airootfs/etc/systemd/system/multi-user.target.wants/firewalld.service
             ln -sf /usr/lib/systemd/system/systemd-timesyncd.service profile/airootfs/etc/systemd/system/multi-user.target.wants/systemd-timesyncd.service
             ln -sf /usr/lib/systemd/system/sddm.service profile/airootfs/etc/systemd/system/graphical.target.wants/sddm.service
-            ln -sf /usr/lib/systemd/system/zenos-firstboot-tty.service profile/airootfs/etc/systemd/system/multi-user.target.wants/zenos-firstboot-tty.service
+            ln -sf /etc/systemd/system/zenos-firstboot-tty.service profile/airootfs/etc/systemd/system/multi-user.target.wants/zenos-firstboot-tty.service
             mkarchiso -v -w /tmp/archiso-work -o /work/out /work/profile
           '
       - uses: actions/upload-artifact@v4
