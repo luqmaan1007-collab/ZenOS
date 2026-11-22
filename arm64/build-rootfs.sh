@@ -21,6 +21,9 @@ FINGERPRINT="$(gpg --batch --with-colons --fingerprint 68B3537F39A313B3E574D0677
 [[ "$FINGERPRINT" == "68B3537F39A313B3E574D06777193F152BDBE6A6" ]] || { echo "Arch Linux ARM signing-key fingerprint mismatch" >&2; exit 1; }
 gpg --batch --verify "$ARCHIVE_SIG" "$ARCHIVE"
 tar -xpf "$ARCHIVE" -C "$DEST" --numeric-owner
+# The compressed bootstrap archive is large; remove it before pacman downloads
+# hundreds of MiB of package updates into the extracted root filesystem.
+rm -f "$ARCHIVE" "$ARCHIVE_SIG"
 rm -f "$DEST/etc/resolv.conf"
 cp --dereference /etc/resolv.conf "$DEST/etc/resolv.conf"
 printf '%s\n' "zenos-arm64" > "$DEST/etc/hostname"
@@ -52,6 +55,8 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
   pacman-key --init
   pacman-key --populate archlinuxarm
   pacman -Syu --noconfirm
+  # Do not keep the bootstrap upgrade packages while downloading the desktop.
+  pacman -Scc --noconfirm
   pacman -S --needed --noconfirm \
     base linux-aarch64 linux-firmware mkinitcpio grub efibootmgr \
     plasma-meta plasma-welcome plasma-workspace-wallpapers sddm breeze kdialog papirus-icon-theme noto-fonts noto-fonts-emoji \
@@ -70,6 +75,8 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
     if pacman -Si "$package" >/dev/null 2>&1; then available+=("$package"); else echo "Optional ARM package unavailable: $package"; fi
   done
   if (("${#available[@]}" > 0)); then pacman -S --needed --noconfirm "${available[@]}"; fi
+  # Release the package cache before creating the final rootfs and disk image.
+  pacman -Scc --noconfirm
   locale-gen
   passwd -l root
   userdel -r alarm || true
