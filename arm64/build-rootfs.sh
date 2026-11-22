@@ -61,12 +61,13 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
   touch /etc/resolv.conf
 '
 install -m 0755 scripts/zenos-app "$DEST/usr/local/bin/zenos-app"
-install -m 0755 scripts/zenos-install "$DEST/usr/local/bin/zenos-install"
 install -m 0755 scripts/zenos-firstboot "$DEST/usr/local/sbin/zenos-firstboot"
 install -m 0755 scripts/zenos-theme-apply "$DEST/usr/local/bin/zenos-theme-apply"
 install -m 0644 overlay/etc/systemd/system/zenos-firstboot-tty.service "$DEST/etc/systemd/system/zenos-firstboot-tty.service"
 install -m 0644 overlay/etc/zenos-release "$DEST/etc/zenos-release"
-install -m 0644 overlay/usr/share/applications/*.desktop "$DEST/usr/share/applications/"
+install -m 0644 overlay/usr/share/applications/zenos-browser.desktop "$DEST/usr/share/applications/"
+install -m 0644 overlay/usr/share/applications/zenos-store.desktop "$DEST/usr/share/applications/"
+install -m 0644 overlay/usr/share/applications/zenos-theme.desktop "$DEST/usr/share/applications/"
 install -m 0644 overlay/usr/share/color-schemes/ZenGlass.colors "$DEST/usr/share/color-schemes/ZenGlass.colors"
 ln -sfn /usr/lib/systemd/system/NetworkManager.service "$DEST/etc/systemd/system/multi-user.target.wants/NetworkManager.service"
 ln -sfn /usr/lib/systemd/system/bluetooth.service "$DEST/etc/systemd/system/multi-user.target.wants/bluetooth.service"
