@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ZenOS Software
+Comment=Discover applications and updates
+Exec=plasma-discover
+Icon=plasmadiscover
+Terminal=false
+Categories=System;PackageManager;
