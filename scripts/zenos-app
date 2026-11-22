@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+usage() {
+  cat <<'HELP'
+Usage: zenos-app FILE
+
+Supported handlers:
+  .flatpakref / .flatpak  Install through Flatpak
+  .AppImage               Launch an AppImage
+  .exe                    Launch with Wine (compatibility varies)
+  .apk                    Install through an active Waydroid session
+  .dmg / .app             Not executable as Linux apps; see compatibility notes
+  .deb / .rpm             Not native Arch packages
+HELP
+}
+[[ $# -eq 1 ]] || { usage; exit 2; }
+file=$1
+[[ -e "$file" ]] || { echo "File or application bundle not found: $file" >&2; exit 1; }
+case "$file" in
+  *.flatpakref|*.flatpak)
+    command -v flatpak >/dev/null || { echo "Flatpak is not installed." >&2; exit 1; }
+    exec flatpak install --user --assumeyes "$file" ;;
+  *.AppImage|*.appimage)
+    chmod u+x "$file"
+    exec "$file" ;;
+  *.exe|*.EXE)
+    command -v wine >/dev/null || { echo "Wine is not installed." >&2; exit 1; }
+    exec wine "$file" ;;
+  *.apk)
+    command -v waydroid >/dev/null || { echo "Waydroid is optional and not installed." >&2; exit 1; }
+    waydroid status | grep -qi running || { echo "Start and initialize a supported Waydroid session first." >&2; exit 1; }
+    exec waydroid app install "$file" ;;
+  *.dmg|*.app)
+    echo "macOS app bundles use macOS frameworks and binaries; Linux cannot install or run them natively." >&2
+    echo "Look for a Linux build or a web version of this application." >&2
+    exit 1 ;;
+  *.deb|*.rpm)
+    echo "Not a native Arch package. Look for a Flatpak or Arch package." >&2; exit 1 ;;
+  *)
+    echo "Unknown package type. See: zenos-app --help" >&2; exit 2 ;;
+esac
