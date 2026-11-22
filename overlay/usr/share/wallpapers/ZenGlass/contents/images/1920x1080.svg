@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071526"/>
+      <stop offset=".42" stop-color="#123c59"/>
+      <stop offset="1" stop-color="#302b5d"/>
+    </linearGradient>
+    <radialGradient id="aura" cx=".52" cy=".38" r=".7">
+      <stop offset="0" stop-color="#66d7e8" stop-opacity=".34"/>
+      <stop offset=".48" stop-color="#4779cb" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#101a38" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".24"/>
+      <stop offset=".45" stop-color="#b9e9ff" stop-opacity=".07"/>
+      <stop offset="1" stop-color="#9f9dff" stop-opacity=".15"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".72"/>
+      <stop offset=".55" stop-color="#a9e8ff" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#c9b9ff" stop-opacity=".56"/>
+    </linearGradient>
+    <linearGradient id="orb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9fbff" stop-opacity=".72"/>
+      <stop offset=".28" stop-color="#7dd5f0" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#8e8dff" stop-opacity=".12"/>
+    </linearGradient>
+    <filter id="blur80" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="80"/>
+    </filter>
+    <filter id="blur28" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="28"/>
+      <feOffset dy="22"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope=".34"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <rect width="1920" height="1080" fill="url(#aura)"/>
+  <ellipse cx="340" cy="230" rx="390" ry="260" fill="#4dd8eb" opacity=".24" filter="url(#blur80)"/>
+  <ellipse cx="1560" cy="850" rx="470" ry="310" fill="#8d77ff" opacity=".25" filter="url(#blur80)"/>
+  <ellipse cx="1120" cy="160" rx="250" ry="150" fill="#9deaff" opacity=".18" filter="url(#blur80)"/>
+  <path d="M0 760 C330 610 520 940 850 770 S1410 560 1920 760 V1080 H0Z" fill="#0b1b38" opacity=".45"/>
+  <path d="M0 875 C350 735 650 1010 1040 850 S1570 700 1920 880 V1080 H0Z" fill="#101d42" opacity=".56"/>
+  <g filter="url(#shadow)">
+    <rect x="365" y="210" width="1190" height="660" rx="68" fill="url(#glass)" stroke="url(#edge)" stroke-width="2"/>
+    <path d="M430 286 Q430 270 455 270 H1465" fill="none" stroke="#ffffff" stroke-opacity=".32" stroke-width="3" stroke-linecap="round"/>
+    <path d="M425 760 Q790 850 1120 770 T1500 770" fill="none" stroke="#d4f6ff" stroke-opacity=".12" stroke-width="2"/>
+  </g>
+  <g opacity=".9">
+    <circle cx="560" cy="420" r="120" fill="url(#orb)" stroke="#e4fbff" stroke-opacity=".46" stroke-width="2"/>
+    <circle cx="560" cy="420" r="86" fill="none" stroke="#ffffff" stroke-opacity=".24" stroke-width="2"/>
+    <circle cx="1325" cy="640" r="175" fill="url(#orb)" stroke="#e4fbff" stroke-opacity=".34" stroke-width="2"/>
+    <circle cx="1325" cy="640" r="125" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="2"/>
+    <circle cx="1060" cy="360" r="46" fill="#dffaff" opacity=".14" filter="url(#blur28)"/>
+    <circle cx="890" cy="730" r="26" fill="#dffaff" opacity=".28" filter="url(#blur28)"/>
+  </g>
+  <g fill="none" stroke="#e8fbff" stroke-opacity=".18">
+    <path d="M240 120 C530 20 740 180 960 100 S1440 10 1700 160" stroke-width="2"/>
+    <path d="M180 970 C510 850 740 1040 1050 930 S1570 820 1810 960" stroke-width="2"/>
+  </g>
+</svg>
