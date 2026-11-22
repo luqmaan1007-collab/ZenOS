@@ -40,6 +40,8 @@ pipewire
 pipewire-alsa
 pipewire-pulse
 wireplumber
+alsa-utils
+sof-firmware
 bluez
 bluez-utils
 sudo
@@ -76,7 +78,11 @@ gvfs-gphoto2
 fwupd
 firewalld
 btrfs-progs
+e2fsprogs
 dosfstools
+exfatprogs
+ntfs-3g
+f2fs-tools
 efibootmgr
 grub
 os-prober
@@ -96,3 +102,8 @@ sane
 simple-scan
 v4l-utils
 libcamera
+usbutils
+pciutils
+dmidecode
+smartmontools
+nvme-cli
