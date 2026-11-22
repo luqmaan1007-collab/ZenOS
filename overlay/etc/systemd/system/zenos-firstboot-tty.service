@@ -1,7 +1,8 @@
 [Unit]
 Description=ZenOS first-boot account setup
 After=systemd-user-sessions.service
-Before=display-manager.service
+Before=getty@tty1.service display-manager.service
+Conflicts=getty@tty1.service
 ConditionPathExists=!/var/lib/zenos/firstboot.done
 
 [Service]
@@ -10,7 +11,7 @@ ExecStart=/usr/local/sbin/zenos-firstboot
 StandardInput=tty
 StandardOutput=tty
 StandardError=tty
-TTYPath=/dev/tty2
+TTYPath=/dev/tty1
 TTYReset=yes
 TTYVHangup=yes
 TTYVTDisallocate=yes
