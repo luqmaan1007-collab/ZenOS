@@ -5,11 +5,14 @@ amd-ucode
 intel-ucode
 archinstall
 plasma-meta
+plasma-welcome
+plasma-workspace-wallpapers
 plasma-wayland-session
 sddm
 breeze
 breeze-gtk
 firefox
+mpv
 dolphin
 dolphin-plugins
 kio-extras
