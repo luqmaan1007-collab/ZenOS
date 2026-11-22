@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ZenOS Browser
+Comment=Browse the web with Firefox
+Exec=firefox %u
+Icon=firefox
+Terminal=false
+Categories=Network;WebBrowser;
