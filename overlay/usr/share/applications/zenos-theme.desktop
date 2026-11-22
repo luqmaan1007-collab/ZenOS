@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ZenOS Appearance
+Comment=Apply ZenOS translucent color and blur settings
+Exec=konsole -e /usr/local/bin/zenos-theme-apply
+Icon=preferences-desktop-theme
+Terminal=false
+Categories=Settings;DesktopSettings;
