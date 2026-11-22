@@ -27,6 +27,7 @@ jobs:
           set -euo pipefail
           bash -n profile/profiledef.sh
           bash -n arm64/build-rootfs.sh
+          bash -n arm64/build-uefi-image.sh
           for script in scripts/*; do bash -n "$script"; done
       - name: Check whitespace errors
         run: git diff --check
@@ -78,12 +79,21 @@ jobs:
         run: |
           set -euo pipefail
           sudo --preserve-env=RUNNER_TEMP bash arm64/build-rootfs.sh "$RUNNER_TEMP/zenos-aarch64"
+          sudo apt-get update
+          sudo apt-get install -y dosfstools e2fsprogs parted rsync zstd util-linux
           mkdir -p out
           sudo tar --numeric-owner --xattrs -C "$RUNNER_TEMP/zenos-aarch64" -czf out/zenos-aarch64-rootfs.tar.gz .
-          sudo chown "$USER":"$USER" out/zenos-aarch64-rootfs.tar.gz
+          sudo bash arm64/build-uefi-image.sh "$RUNNER_TEMP/zenos-aarch64" "$GITHUB_WORKSPACE/out/zenos-aarch64-uefi.img.zst"
+          sudo chown "$USER":"$USER" out/zenos-aarch64-rootfs.tar.gz out/zenos-aarch64-uefi.img.zst
       - uses: actions/upload-artifact@v4
         with:
           name: zenos-aarch64-rootfs
           path: out/zenos-aarch64-rootfs.tar.gz
+          if-no-files-found: error
+          compression-level: 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zenos-aarch64-uefi-image
+          path: out/zenos-aarch64-uefi.img.zst
           if-no-files-found: error
           compression-level: 0
