@@ -1,0 +1,5 @@
+NAME="ZenOS"
+PRETTY_NAME="ZenOS Arch Linux Engineering Preview"
+ID=zenos
+ID_LIKE=arch
+BUILD_ID=development
