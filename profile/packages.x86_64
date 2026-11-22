@@ -82,7 +82,7 @@ grub
 os-prober
 reflector
 unzip
-p7zip
+7zip
 file
 htop
 btop
