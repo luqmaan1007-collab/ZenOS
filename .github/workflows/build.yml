@@ -1,0 +1,69 @@
+name: Build ZenOS
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/build.yml"
+      - "profile/**"
+      - "arm64/**"
+      - "overlay/**"
+      - "scripts/**"
+      - "README.md"
+permissions:
+  contents: read
+concurrency:
+  group: zenos-build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  x86_64:
+    name: x86-64 live ISO
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Archiso image
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          docker run --rm --privileged -v "$GITHUB_WORKSPACE:/work" -w /work archlinux:latest bash -euo pipefail -c '
+            pacman -Syu --noconfirm archiso
+            mkdir -p profile/airootfs
+            cp -a overlay/. profile/airootfs/
+            install -d profile/airootfs/usr/local/bin profile/airootfs/usr/local/sbin
+            install -m 0755 scripts/zenos-app profile/airootfs/usr/local/bin/zenos-app
+            install -m 0755 scripts/zenos-install profile/airootfs/usr/local/bin/zenos-install
+            install -m 0755 scripts/zenos-firstboot profile/airootfs/usr/local/sbin/zenos-firstboot
+            install -m 0755 scripts/zenos-theme-apply profile/airootfs/usr/local/bin/zenos-theme-apply
+            install -d profile/airootfs/etc/systemd/system/multi-user.target.wants profile/airootfs/etc/systemd/system/graphical.target.wants
+            ln -sf /usr/lib/systemd/system/NetworkManager.service profile/airootfs/etc/systemd/system/multi-user.target.wants/NetworkManager.service
+            ln -sf /usr/lib/systemd/system/bluetooth.service profile/airootfs/etc/systemd/system/multi-user.target.wants/bluetooth.service
+            ln -sf /usr/lib/systemd/system/sddm.service profile/airootfs/etc/systemd/system/graphical.target.wants/sddm.service
+            ln -sf /usr/lib/systemd/system/zenos-firstboot-tty.service profile/airootfs/etc/systemd/system/multi-user.target.wants/zenos-firstboot-tty.service
+            mkarchiso -v -w /tmp/archiso-work -o /work/out /work/profile
+          '
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zenos-x86_64-iso
+          path: out/*.iso
+          if-no-files-found: error
+          compression-level: 0
+  aarch64:
+    name: ARM64 Arch Linux ARM rootfs
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ARM64 root filesystem
+        run: |
+          set -euo pipefail
+          sudo --preserve-env=RUNNER_TEMP bash arm64/build-rootfs.sh "$RUNNER_TEMP/zenos-aarch64"
+          mkdir -p out
+          sudo tar --numeric-owner --xattrs -C "$RUNNER_TEMP/zenos-aarch64" -czf out/zenos-aarch64-rootfs.tar.gz .
+          sudo chown "$USER":"$USER" out/zenos-aarch64-rootfs.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zenos-aarch64-rootfs
+          path: out/zenos-aarch64-rootfs.tar.gz
+          if-no-files-found: error
+          compression-level: 0
