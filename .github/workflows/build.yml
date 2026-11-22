@@ -44,25 +44,30 @@ jobs:
           mkdir -p out
           docker run --rm --privileged -v "$GITHUB_WORKSPACE:/work" -w /work archlinux:latest bash -euo pipefail -c '
             pacman -Syu --noconfirm archiso
-            mkdir -p profile/airootfs
-            cp -a overlay/. profile/airootfs/
-            install -d profile/airootfs/usr/local/bin profile/airootfs/usr/local/sbin
-            install -m 0755 scripts/zenos-app profile/airootfs/usr/local/bin/zenos-app
-            install -m 0755 scripts/zenos-install profile/airootfs/usr/local/bin/zenos-install
-            install -m 0755 scripts/zenos-firstboot profile/airootfs/usr/local/sbin/zenos-firstboot
-            install -m 0755 scripts/zenos-theme-apply profile/airootfs/usr/local/bin/zenos-theme-apply
-            install -m 0755 scripts/zenos-desktop-first-login profile/airootfs/usr/local/bin/zenos-desktop-first-login
-            install -d profile/airootfs/etc/systemd/system/multi-user.target.wants profile/airootfs/etc/systemd/system/graphical.target.wants
-            ln -sf /usr/lib/systemd/system/NetworkManager.service profile/airootfs/etc/systemd/system/multi-user.target.wants/NetworkManager.service
-            ln -sf /usr/lib/systemd/system/bluetooth.service profile/airootfs/etc/systemd/system/multi-user.target.wants/bluetooth.service
-            ln -sf /usr/lib/systemd/system/cups.service profile/airootfs/etc/systemd/system/multi-user.target.wants/cups.service
-            ln -sf /usr/lib/systemd/system/avahi-daemon.service profile/airootfs/etc/systemd/system/multi-user.target.wants/avahi-daemon.service
-            ln -sf /usr/lib/systemd/system/firewalld.service profile/airootfs/etc/systemd/system/multi-user.target.wants/firewalld.service
-            ln -sf /usr/lib/systemd/system/systemd-timesyncd.service profile/airootfs/etc/systemd/system/multi-user.target.wants/systemd-timesyncd.service
-            ln -sf /usr/lib/systemd/system/sddm.service profile/airootfs/etc/systemd/system/graphical.target.wants/sddm.service
-            ln -sf /usr/lib/systemd/system/sddm.service profile/airootfs/etc/systemd/system/display-manager.service
-            ln -sf /etc/systemd/system/zenos-firstboot-tty.service profile/airootfs/etc/systemd/system/multi-user.target.wants/zenos-firstboot-tty.service
-            mkarchiso -v -w /tmp/archiso-work -o /work/out /work/profile
+            mkdir -p /tmp/zenos-profile
+            cp -a /usr/share/archiso/configs/releng/. /tmp/zenos-profile/
+            cp /work/profile/profiledef.sh /tmp/zenos-profile/profiledef.sh
+            cp /work/profile/packages.x86_64 /tmp/zenos-profile/packages.x86_64
+            cp /work/profile/pacman.conf /tmp/zenos-profile/pacman.conf
+            mkdir -p /tmp/zenos-profile/airootfs
+            cp -a /work/overlay/. /tmp/zenos-profile/airootfs/
+            install -d /tmp/zenos-profile/airootfs/usr/local/bin /tmp/zenos-profile/airootfs/usr/local/sbin
+            install -m 0755 /work/scripts/zenos-app /tmp/zenos-profile/airootfs/usr/local/bin/zenos-app
+            install -m 0755 /work/scripts/zenos-install /tmp/zenos-profile/airootfs/usr/local/bin/zenos-install
+            install -m 0755 /work/scripts/zenos-firstboot /tmp/zenos-profile/airootfs/usr/local/sbin/zenos-firstboot
+            install -m 0755 /work/scripts/zenos-theme-apply /tmp/zenos-profile/airootfs/usr/local/bin/zenos-theme-apply
+            install -m 0755 /work/scripts/zenos-desktop-first-login /tmp/zenos-profile/airootfs/usr/local/bin/zenos-desktop-first-login
+            install -d /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants /tmp/zenos-profile/airootfs/etc/systemd/system/graphical.target.wants
+            ln -sf /usr/lib/systemd/system/NetworkManager.service /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants/NetworkManager.service
+            ln -sf /usr/lib/systemd/system/bluetooth.service /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants/bluetooth.service
+            ln -sf /usr/lib/systemd/system/cups.service /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants/cups.service
+            ln -sf /usr/lib/systemd/system/avahi-daemon.service /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants/avahi-daemon.service
+            ln -sf /usr/lib/systemd/system/firewalld.service /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants/firewalld.service
+            ln -sf /usr/lib/systemd/system/systemd-timesyncd.service /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants/systemd-timesyncd.service
+            ln -sf /usr/lib/systemd/system/sddm.service /tmp/zenos-profile/airootfs/etc/systemd/system/graphical.target.wants/sddm.service
+            ln -sf /usr/lib/systemd/system/sddm.service /tmp/zenos-profile/airootfs/etc/systemd/system/display-manager.service
+            ln -sf /etc/systemd/system/zenos-firstboot-tty.service /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants/zenos-firstboot-tty.service
+            mkarchiso -v -w /tmp/archiso-work -o /work/out /tmp/zenos-profile
           '
           sha256sum out/*.iso > out/SHA256SUMS
       - uses: actions/upload-artifact@v4
