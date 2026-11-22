@@ -19,6 +19,7 @@ okular
 kcalc
 discover
 flatpak
+packagekit
 packagekit-qt6
 networkmanager
 network-manager-applet
@@ -71,7 +72,6 @@ gvfs-mtp
 gvfs-smb
 gvfs-gphoto2
 fwupd
-ufw
 firewalld
 btrfs-progs
 dosfstools
