@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+command -v kdialog >/dev/null 2>&1 || { echo "ZenOS Welcome requires KDE's kdialog package."; exit 1; }
+choice="$(kdialog --title "Welcome to ZenOS" --menu "Your ZenOS desktop is ready. What would you like to do?" \
+  browser "Open the web browser" \
+  store "Explore applications" \
+  settings "Open system settings" \
+  files "Browse files" \
+  terminal "Open terminal" \
+  theme "Apply ZenGlass appearance" \
+  install "Install ZenOS to this computer" \
+  updates "Check for system updates")" || exit 0
+case "$choice" in
+  browser) exec firefox ;;
+  store) exec plasma-discover ;;
+  settings) exec systemsettings ;;
+  files) exec dolphin ;;
+  terminal) exec konsole ;;
+  theme) exec /usr/local/bin/zenos-theme-apply ;;
+  install) exec /usr/local/bin/zenos-install ;;
+  updates) exec konsole -e sudo pacman -Syu ;;
+esac
