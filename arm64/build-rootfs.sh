@@ -41,13 +41,14 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
     plasma-meta plasma-wayland-session sddm breeze \
     firefox dolphin dolphin-plugins kio-extras konsole kate okular kcalc \
     discover flatpak packagekit-qt6 kdeconnect kde-gtk-config sddm-kcm \
-    networkmanager plasma-nm wpa_supplicant iwd pipewire pipewire-alsa pipewire-pulse wireplumber \
+    plasma-nm plasma-pa plasma-firewall plasma-systemmonitor polkit-kde-agent \
+    networkmanager wpa_supplicant iwd pipewire pipewire-alsa pipewire-pulse wireplumber \
     bluez bluez-utils sudo nano vim git openssh rsync curl wget \
     xdg-user-dirs xdg-utils xdg-desktop-portal xdg-desktop-portal-kde xdg-desktop-portal-gtk \
     ark spectacle partitionmanager cups system-config-printer avahi nss-mdns \
-    power-profiles-daemon upower udisks2 gvfs gvfs-mtp gvfs-smb \
+    firewalld power-profiles-daemon upower udisks2 gvfs gvfs-mtp gvfs-smb gvfs-gphoto2 \
     fwupd unzip p7zip file htop btop man-db man-pages bash-completion \
-    sane simple-scan v4l-utils
+    sane simple-scan v4l-utils libcamera
   locale-gen
 '
 install -m 0755 scripts/zenos-app "$DEST/usr/local/bin/zenos-app"
@@ -60,5 +61,9 @@ install -m 0644 overlay/usr/share/applications/*.desktop "$DEST/usr/share/applic
 install -m 0644 overlay/usr/share/color-schemes/ZenGlass.colors "$DEST/usr/share/color-schemes/ZenGlass.colors"
 ln -sfn /usr/lib/systemd/system/NetworkManager.service "$DEST/etc/systemd/system/multi-user.target.wants/NetworkManager.service"
 ln -sfn /usr/lib/systemd/system/bluetooth.service "$DEST/etc/systemd/system/multi-user.target.wants/bluetooth.service"
+ln -sfn /usr/lib/systemd/system/cups.service "$DEST/etc/systemd/system/multi-user.target.wants/cups.service"
+ln -sfn /usr/lib/systemd/system/avahi-daemon.service "$DEST/etc/systemd/system/multi-user.target.wants/avahi-daemon.service"
+ln -sfn /usr/lib/systemd/system/firewalld.service "$DEST/etc/systemd/system/multi-user.target.wants/firewalld.service"
+ln -sfn /usr/lib/systemd/system/systemd-timesyncd.service "$DEST/etc/systemd/system/multi-user.target.wants/systemd-timesyncd.service"
 ln -sfn /etc/systemd/system/zenos-firstboot-tty.service "$DEST/etc/systemd/system/multi-user.target.wants/zenos-firstboot-tty.service"
 ln -sfn /usr/lib/systemd/system/sddm.service "$DEST/etc/systemd/system/graphical.target.wants/sddm.service"
