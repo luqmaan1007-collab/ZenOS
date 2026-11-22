@@ -38,7 +38,7 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
   pacman -Syu --noconfirm
   pacman -S --needed --noconfirm \
     base linux-aarch64 linux-firmware grub efibootmgr \
-    plasma-meta plasma-welcome plasma-workspace-wallpapers plasma-wayland-session sddm breeze \
+    plasma-meta plasma-welcome plasma-workspace-wallpapers sddm breeze \
     firefox mpv dolphin dolphin-plugins kio-extras konsole kate okular kcalc \
     discover flatpak packagekit packagekit-qt6 kdeconnect kde-gtk-config sddm-kcm \
     plasma-nm plasma-pa plasma-firewall plasma-systemmonitor polkit-kde-agent \
