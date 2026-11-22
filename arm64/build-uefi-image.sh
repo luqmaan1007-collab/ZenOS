@@ -3,7 +3,7 @@ set -euo pipefail
 ROOTFS=${1:?Usage: build-uefi-image.sh ROOTFS_DIR OUTPUT.img.zst}
 OUTPUT=${2:?Usage: build-uefi-image.sh ROOTFS_DIR OUTPUT.img.zst}
 [[ $EUID -eq 0 ]] || { echo "Run as root (the workflow uses sudo)." >&2; exit 1; }
-for cmd in losetup parted partprobe udevadm mkfs.fat mkfs.ext4 rsync blkid grub-install zstd; do
+for cmd in losetup parted partprobe udevadm mkfs.fat mkfs.ext4 rsync blkid zstd; do
   command -v "$cmd" >/dev/null || { echo "Missing build dependency: $cmd" >&2; exit 1; }
 done
 [[ -d "$ROOTFS/boot" ]] || { echo "Root filesystem has no /boot directory." >&2; exit 1; }
@@ -65,7 +65,7 @@ cat > "$ROOT_MNT/etc/fstab" <<FSTAB
 UUID=$ROOT_UUID / ext4 defaults,noatime 0 1
 UUID=$ESP_UUID /boot vfat umask=0077 0 2
 FSTAB
-chroot "$ROOT_MNT" grub-install --target=arm64-efi --efi-directory=/boot --boot-directory=/boot --removable --no-nvram --recheck
+chroot "$ROOT_MNT" /bin/bash -euo pipefail -c 'command -v grub-install >/dev/null; grub-install --target=arm64-efi --efi-directory=/boot --boot-directory=/boot --removable --no-nvram --recheck'
 cat > "$ESP_MNT/grub/grub.cfg" <<GRUB
 set default=0
 set timeout=5
