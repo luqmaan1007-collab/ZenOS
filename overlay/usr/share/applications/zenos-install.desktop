@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Install ZenOS
+Comment=Start the guided Arch Linux installer
+Exec=konsole -e sudo /usr/local/bin/zenos-install
+Icon=system-software-install
+Terminal=false
+Categories=System;
