@@ -11,7 +11,7 @@ ZenOS is an Arch Linux-based desktop distribution project targeting x86-64 PCs a
 - Arch packages through pacman; Flatpak/Flathub; AppImage; Windows applications through Wine (compatibility varies).
 - Optional Android APK support through Waydroid on compatible kernels and hardware.
 - NetworkManager, Wi-Fi tooling, Bluetooth/BlueZ, PipeWire audio, printing, power profiles, portals, firewall and firmware tools.
-- Remote GitHub Actions builds for x86-64 live ISO and ARM64 root filesystem archive.
+- Remote GitHub Actions builds for x86-64 live ISO, ARM64 root filesystem archive and generic ARM64 UEFI disk image.
 
 ## Application formats
 
@@ -31,9 +31,9 @@ No compatibility layer can guarantee that every Windows or Android app works. Ze
 
 1. Open **Actions → Build ZenOS**.
 2. Run the workflow on main.
-3. Download the zenos-x86_64-iso and zenos-aarch64-rootfs artifacts.
+3. Download the zenos-x86_64-iso, zenos-aarch64-rootfs and zenos-aarch64-uefi-image artifacts.
 
-The builds run on GitHub-hosted runners. The ARM archive is a root filesystem, **not a universal bootable image**. A bootable ARM image needs a named target board, matching bootloader, kernel, device tree, firmware, partition layout and hardware tests.
+The builds run on GitHub-hosted runners. The ARM UEFI image targets standard ARM64 UEFI computers; it is not a universal image for every ARM board. Raspberry Pi and other SBCs need a board-specific bootloader, kernel, device tree, firmware and partition layout.
 
 ## Development status
 
