@@ -4,7 +4,7 @@
 - [x] Arch Linux desktop baseline and remote build definitions
 - [x] Generic ARM64 UEFI disk-image builder and rootfs archive target
 - [x] Firefox, Discover, Flatpak, networking, audio, Bluetooth and printing package selection
-- [x] Initial ZenGlass KDE color scheme and KWin blur configuration
+- [x] Initial ZenGlass KDE color scheme, custom wallpaper, KWin blur and GTK dark defaults
 - [x] First-boot local administrator account prompt (requires boot validation)
 - [x] Format-aware application launcher for Flatpak, AppImage, Wine and optional Waydroid
 - [ ] Run and fix the first x86-64 and ARM64 GitHub Actions builds
