@@ -1,0 +1,14 @@
+{
+  "KPlugin": {
+    "Authors": [
+      {
+        "Name": "ZenOS contributors"
+      }
+    ],
+    "Category": "Plasma 6",
+    "Description": "A calm layered glass landscape for the ZenOS desktop",
+    "Id": "ZenGlass",
+    "License": "MIT",
+    "Name": "ZenGlass"
+  }
+}
