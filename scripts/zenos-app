@@ -5,18 +5,22 @@ usage() {
 Usage: zenos-app FILE
 
 Supported handlers:
-  .flatpakref / .flatpak  Install through Flatpak
-  .AppImage               Launch an AppImage
-  .exe                    Launch with Wine (compatibility varies)
-  .apk                    Install through an active Waydroid session
-  .dmg / .app             Not executable as Linux apps; see compatibility notes
-  .deb / .rpm             Not native Arch packages
+  .pkg.tar.zst / .pkg.tar.xz  Install a local Arch package
+  .flatpakref / .flatpak      Install through Flatpak
+  .AppImage                  Launch an AppImage
+  .exe / .msi                Launch with Wine (compatibility varies)
+  .apk                       Install through an active Waydroid session
+  .dmg / .app                macOS applications are not Linux binaries
+  .deb / .rpm                Not native Arch packages
 HELP
 }
 [[ $# -eq 1 ]] || { usage; exit 2; }
 file=$1
 [[ -e "$file" ]] || { echo "File or application bundle not found: $file" >&2; exit 1; }
 case "$file" in
+  *.pkg.tar.zst|*.pkg.tar.xz|*.pkg.tar.gz)
+    command -v pacman >/dev/null || { echo "pacman is not installed." >&2; exit 1; }
+    exec sudo pacman -U "$file" ;;
   *.flatpakref|*.flatpak)
     command -v flatpak >/dev/null || { echo "Flatpak is not installed." >&2; exit 1; }
     exec flatpak install --user --assumeyes "$file" ;;
@@ -26,6 +30,9 @@ case "$file" in
   *.exe|*.EXE)
     command -v wine >/dev/null || { echo "Wine is not installed." >&2; exit 1; }
     exec wine "$file" ;;
+  *.msi|*.MSI)
+    command -v wine >/dev/null || { echo "Wine is not installed." >&2; exit 1; }
+    exec wine msiexec /i "$file" ;;
   *.apk)
     command -v waydroid >/dev/null || { echo "Waydroid is optional and not installed." >&2; exit 1; }
     waydroid status | grep -qi running || { echo "Start and initialize a supported Waydroid session first." >&2; exit 1; }
