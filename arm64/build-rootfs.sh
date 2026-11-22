@@ -50,6 +50,15 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
     fwupd unzip p7zip file htop btop man-db man-pages bash-completion \
     sane simple-scan v4l-utils libcamera
   locale-gen
+  passwd -l root
+  userdel -r alarm || true
+  rm -f /etc/systemd/system/multi-user.target.wants/sshd.service
+  rm -f /etc/systemd/system/sockets.target.wants/sshd.socket
+  rm -f /etc/systemd/system/multi-user.target.wants/systemd-networkd.service
+  rm -f /etc/systemd/system/multi-user.target.wants/systemd-networkd-wait-online.service
+  rm -f /etc/systemd/system/multi-user.target.wants/systemd-resolved.service
+  rm -f /etc/resolv.conf
+  touch /etc/resolv.conf
 '
 install -m 0755 scripts/zenos-app "$DEST/usr/local/bin/zenos-app"
 install -m 0755 scripts/zenos-install "$DEST/usr/local/bin/zenos-install"
