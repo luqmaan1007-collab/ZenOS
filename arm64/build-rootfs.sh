@@ -7,6 +7,8 @@ ARCHIVE="$RUNNER_TEMP/ArchLinuxARM-aarch64-latest.tar.gz"
 mkdir -p "$DEST"
 curl --fail --location --retry 4 --retry-delay 2 "$ARCHROOT_URL" -o "$ARCHIVE"
 tar -xpf "$ARCHIVE" -C "$DEST" --numeric-owner
+rm -f "$DEST/etc/resolv.conf"
+cp --dereference /etc/resolv.conf "$DEST/etc/resolv.conf"
 printf '%s\n' "zenos-arm64" > "$DEST/etc/hostname"
 printf '%s\n' "en_US.UTF-8 UTF-8" > "$DEST/etc/locale.gen"
 printf '%s\n' 'LANG=en_US.UTF-8' > "$DEST/etc/locale.conf"
@@ -57,6 +59,7 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
   find /etc/systemd/system -type l -name systemd-networkd.service -delete
   find /etc/systemd/system -type l -name systemd-networkd-wait-online.service -delete
   find /etc/systemd/system -type l -name systemd-resolved.service -delete
+  find /etc/systemd/system -type l -name dbus-org.freedesktop.resolve1.service -delete
   rm -f /etc/resolv.conf
   touch /etc/resolv.conf
 '
