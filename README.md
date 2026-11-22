@@ -9,7 +9,7 @@ ZenOS is an Arch Linux-based desktop distribution project targeting x86-64 PCs a
 - KDE Plasma 6 desktop, Wayland session, SDDM, Plasma Welcome, a custom ZenGlass wallpaper, Papirus icons, Noto fonts, a ZenOS Welcome hub, default ZenGlass colors, KWin blur settings and dark GTK defaults.
 - Firefox browser, Dolphin file manager, Konsole terminal, Discover software center, Kate editor, Okular PDF viewer, calculator and MPV media player.
 - Arch packages through pacman; Flatpak/Flathub; AppImage; Windows applications through Wine (compatibility varies).
-- Optional Android APK support through Waydroid on compatible kernels and hardware.
+- APK installation is documented as an optional Waydroid integration, but Waydroid is not included in this build.
 - NetworkManager, Wi-Fi tooling, Bluetooth/BlueZ, PipeWire audio, printing, power profiles, portals, firewall and firmware tools.
 - Remote GitHub Actions builds for x86-64 live ISO, ARM64 root filesystem archive and generic ARM64 UEFI disk image (compressed as `.img.zst`).
 
@@ -21,7 +21,7 @@ ZenOS is an Arch Linux-based desktop distribution project targeting x86-64 PCs a
 | Flatpak / .flatpakref | Native via Flatpak and Discover |
 | .AppImage | Launch with FUSE/runtime dependencies as required |
 | .exe / .msi | Wine on x86-64 only; Windows compatibility is application-specific |
-| .apk | Optional Waydroid; requires compatible kernel, graphics and session |
+| .apk | Not enabled in this build; requires a separately installed Waydroid integration and compatible kernel/graphics |
 | .dmg / .app | macOS application binaries are not Linux binaries; not natively installable |
 | .deb / .rpm | Not native; prefer a Flatpak or Arch package |
 
