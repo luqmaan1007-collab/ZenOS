@@ -47,7 +47,7 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
     xdg-user-dirs xdg-utils xdg-desktop-portal xdg-desktop-portal-kde xdg-desktop-portal-gtk \
     ark spectacle partitionmanager cups system-config-printer avahi nss-mdns \
     firewalld power-profiles-daemon upower udisks2 gvfs gvfs-mtp gvfs-smb gvfs-gphoto2 \
-    fwupd unzip p7zip file htop btop man-db man-pages bash-completion \
+    fwupd unzip 7zip file htop btop man-db man-pages bash-completion \
     sane simple-scan v4l-utils libcamera
   locale-gen
   passwd -l root
