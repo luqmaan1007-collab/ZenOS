@@ -22,7 +22,7 @@ RELEASE
 mkdir -p "$DEST/var/lib/zenos" "$DEST/usr/local/bin" "$DEST/usr/local/sbin" \
   "$DEST/etc/systemd/system/multi-user.target.wants" \
   "$DEST/etc/systemd/system/graphical.target.wants" \
-  "$DEST/usr/share/applications" "$DEST/usr/share/color-schemes"
+  "$DEST/usr/share/applications" "$DEST/usr/share/color-schemes" "$DEST/dev/pts" "$DEST/proc" "$DEST/sys"
 mount --bind /dev "$DEST/dev"
 mount --bind /dev/pts "$DEST/dev/pts"
 mount -t proc proc "$DEST/proc"
@@ -42,16 +42,20 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
     base linux-aarch64 linux-firmware grub efibootmgr \
     plasma-meta plasma-welcome plasma-workspace-wallpapers sddm breeze kdialog papirus-icon-theme noto-fonts noto-fonts-emoji \
     firefox mpv dolphin dolphin-plugins kio-extras konsole kate okular kcalc \
-    discover flatpak packagekit packagekit-qt6 kdeconnect kde-gtk-config sddm-kcm \
+    discover flatpak packagekit packagekit-qt6 kde-gtk-config sddm-kcm \
     plasma-nm plasma-pa plasma-firewall plasma-systemmonitor polkit-kde-agent \
     networkmanager wpa_supplicant iwd pipewire pipewire-alsa pipewire-pulse wireplumber \
     bluez bluez-utils sudo nano vim git openssh rsync curl wget alsa-utils \
     xdg-user-dirs xdg-utils xdg-desktop-portal xdg-desktop-portal-kde xdg-desktop-portal-gtk \
-    ark spectacle partitionmanager cups system-config-printer avahi nss-mdns \
-    firewalld power-profiles-daemon upower udisks2 gvfs gvfs-mtp gvfs-smb gvfs-gphoto2 \
-    fwupd unzip 7zip file htop btop fastfetch man-db man-pages bash-completion zsh fish \
-    e2fsprogs dosfstools btrfs-progs exfatprogs ntfs-3g f2fs-tools \
-    sane simple-scan v4l-utils libcamera usbutils pciutils dmidecode smartmontools nvme-cli
+    ark spectacle partitionmanager firewalld power-profiles-daemon upower udisks2 \
+    gvfs gvfs-mtp gvfs-smb unzip 7zip file htop btop fastfetch man-db man-pages bash-completion zsh fish \
+    e2fsprogs dosfstools btrfs-progs exfatprogs ntfs-3g f2fs-tools
+  optional=(kdeconnect cups system-config-printer avahi nss-mdns gvfs-gphoto2 fwupd sane simple-scan v4l-utils libcamera usbutils pciutils dmidecode smartmontools nvme-cli)
+  available=()
+  for package in "${optional[@]}"; do
+    if pacman -Si "$package" >/dev/null 2>&1; then available+=("$package"); else echo "Optional ARM package unavailable: $package"; fi
+  done
+  if (("${#available[@]}" > 0)); then pacman -S --needed --noconfirm "${available[@]}"; fi
   locale-gen
   passwd -l root
   userdel -r alarm || true
