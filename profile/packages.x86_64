@@ -6,10 +6,14 @@ intel-ucode
 archinstall
 plasma-meta
 plasma-welcome
+kdialog
 plasma-workspace-wallpapers
 sddm
 breeze
 breeze-gtk
+papirus-icon-theme
+noto-fonts
+noto-fonts-emoji
 firefox
 mpv
 dolphin
