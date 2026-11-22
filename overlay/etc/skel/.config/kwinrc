@@ -1,0 +1,7 @@
+[Plugins]
+blurEnabled=true
+
+[Effect-blur]
+BlurStrength=8
+NoiseStrength=0
+Saturation=1.35
