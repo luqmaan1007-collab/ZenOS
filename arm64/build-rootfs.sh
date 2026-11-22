@@ -85,12 +85,23 @@ install -m 0644 overlay/usr/share/color-schemes/ZenGlass.colors "$DEST/usr/share
 mkdir -p "$DEST/usr/share/wallpapers/ZenGlass/contents/images"
 install -m 0644 overlay/usr/share/wallpapers/ZenGlass/metadata.json "$DEST/usr/share/wallpapers/ZenGlass/metadata.json"
 install -m 0644 overlay/usr/share/wallpapers/ZenGlass/contents/images/1920x1080.svg "$DEST/usr/share/wallpapers/ZenGlass/contents/images/1920x1080.svg"
-ln -sfn /usr/lib/systemd/system/NetworkManager.service "$DEST/etc/systemd/system/multi-user.target.wants/NetworkManager.service"
-ln -sfn /usr/lib/systemd/system/bluetooth.service "$DEST/etc/systemd/system/multi-user.target.wants/bluetooth.service"
-ln -sfn /usr/lib/systemd/system/cups.service "$DEST/etc/systemd/system/multi-user.target.wants/cups.service"
-ln -sfn /usr/lib/systemd/system/avahi-daemon.service "$DEST/etc/systemd/system/multi-user.target.wants/avahi-daemon.service"
-ln -sfn /usr/lib/systemd/system/firewalld.service "$DEST/etc/systemd/system/multi-user.target.wants/firewalld.service"
-ln -sfn /usr/lib/systemd/system/systemd-timesyncd.service "$DEST/etc/systemd/system/multi-user.target.wants/systemd-timesyncd.service"
+enable_unit() {
+  local unit="$1"
+  local destination="$2"
+  if [[ -f "$DEST/usr/lib/systemd/system/$unit" ]]; then
+    ln -sfn "/usr/lib/systemd/system/$unit" "$destination"
+  else
+    echo "Skipping unavailable service unit: $unit"
+  fi
+}
+enable_unit NetworkManager.service "$DEST/etc/systemd/system/multi-user.target.wants/NetworkManager.service"
+enable_unit bluetooth.service "$DEST/etc/systemd/system/multi-user.target.wants/bluetooth.service"
+enable_unit cups.service "$DEST/etc/systemd/system/multi-user.target.wants/cups.service"
+enable_unit avahi-daemon.service "$DEST/etc/systemd/system/multi-user.target.wants/avahi-daemon.service"
+enable_unit firewalld.service "$DEST/etc/systemd/system/multi-user.target.wants/firewalld.service"
+enable_unit systemd-timesyncd.service "$DEST/etc/systemd/system/multi-user.target.wants/systemd-timesyncd.service"
 ln -sfn /etc/systemd/system/zenos-firstboot-tty.service "$DEST/etc/systemd/system/multi-user.target.wants/zenos-firstboot-tty.service"
-ln -sfn /usr/lib/systemd/system/sddm.service "$DEST/etc/systemd/system/graphical.target.wants/sddm.service"
-ln -sfn /usr/lib/systemd/system/sddm.service "$DEST/etc/systemd/system/display-manager.service"
+enable_unit sddm.service "$DEST/etc/systemd/system/graphical.target.wants/sddm.service"
+if [[ -f "$DEST/usr/lib/systemd/system/sddm.service" ]]; then
+  ln -sfn /usr/lib/systemd/system/sddm.service "$DEST/etc/systemd/system/display-manager.service"
+fi
