@@ -57,6 +57,7 @@ jobs:
             cp -a /work/overlay/. /tmp/zenos-profile/airootfs/
             install -D -m 0644 /work/profile/airootfs/etc/mkinitcpio.conf.d/archiso.conf /tmp/zenos-profile/airootfs/etc/mkinitcpio.conf.d/archiso.conf
             grep -Eq '^HOOKS=.*archiso.*archiso_loop_mnt' /tmp/zenos-profile/airootfs/etc/mkinitcpio.conf.d/archiso.conf
+            grep -Eq '^MODULES=.*squashfs.*loop' /tmp/zenos-profile/airootfs/etc/mkinitcpio.conf.d/archiso.conf
             install -d /tmp/zenos-profile/airootfs/usr/local/bin /tmp/zenos-profile/airootfs/usr/local/sbin
             install -m 0755 /work/scripts/zenos-app /tmp/zenos-profile/airootfs/usr/local/bin/zenos-app
             install -m 0755 /work/scripts/zenos-install /tmp/zenos-profile/airootfs/usr/local/bin/zenos-install
