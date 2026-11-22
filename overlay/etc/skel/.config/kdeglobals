@@ -2,9 +2,10 @@
 ColorScheme=ZenGlass
 Name=ZenGlass
 shadeSortColumn=true
+font=Noto Sans,10,-1,5,50,0,0,0,0,0
 
 [KDE]
 widgetStyle=Breeze
 
 [Icons]
-Theme=breeze-dark
+Theme=Papirus-Dark
