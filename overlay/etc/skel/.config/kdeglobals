@@ -1,0 +1,10 @@
+[General]
+ColorScheme=ZenGlass
+Name=ZenGlass
+shadeSortColumn=true
+
+[KDE]
+widgetStyle=Breeze
+
+[Icons]
+Theme=breeze-dark
