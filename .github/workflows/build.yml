@@ -91,6 +91,8 @@ jobs:
       - name: Build ARM64 root filesystem
         run: |
           set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y gnupg
           sudo --preserve-env=RUNNER_TEMP bash arm64/build-rootfs.sh "$RUNNER_TEMP/zenos-aarch64"
           sudo apt-get update
           sudo apt-get install -y dosfstools e2fsprogs parted rsync zstd util-linux
