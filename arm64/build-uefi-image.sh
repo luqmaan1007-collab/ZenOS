@@ -29,7 +29,7 @@ cleanup() {
   rm -rf "$WORK"
 }
 trap cleanup EXIT
-truncate -s 8G "$RAW"
+truncate -s 12G "$RAW"
 LOOP="$(losetup --find --show --partscan "$RAW")"
 parted -s "$LOOP" mklabel gpt
 parted -s "$LOOP" mkpart ESP fat32 1MiB 513MiB
