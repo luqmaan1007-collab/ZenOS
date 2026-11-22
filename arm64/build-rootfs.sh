@@ -2,10 +2,16 @@
 set -euo pipefail
 DEST=${1:?Usage: build-rootfs.sh DESTINATION}
 : "${RUNNER_TEMP:=$(mktemp -d)}"
-ARCHROOT_URL="https://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
+# Arch Linux ARM's download page publishes the official tarball and detached
+# signature. Use its HTTP redirector because the origin's TLS certificate
+# currently fails hostname validation; authenticate the payload with GPG
+# before running anything from the extracted root filesystem.
+ARCHROOT_URL="http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
 ARCHIVE="$RUNNER_TEMP/ArchLinuxARM-aarch64-latest.tar.gz"
+ARCHIVE_SIG="$ARCHIVE.sig"
 mkdir -p "$DEST"
-curl --fail --location --retry 4 --retry-delay 2 "$ARCHROOT_URL" -o "$ARCHIVE"
+curl --fail --location --retry 5 --retry-all-errors --retry-delay 3 "$ARCHROOT_URL" -o "$ARCHIVE"
+curl --fail --location --retry 5 --retry-all-errors --retry-delay 3 "${ARCHROOT_URL}.sig" -o "$ARCHIVE_SIG"
 tar -xpf "$ARCHIVE" -C "$DEST" --numeric-owner
 rm -f "$DEST/etc/resolv.conf"
 cp --dereference /etc/resolv.conf "$DEST/etc/resolv.conf"
@@ -37,6 +43,7 @@ trap cleanup EXIT
 chroot "$DEST" /bin/bash -euo pipefail -c '
   pacman-key --init
   pacman-key --populate archlinuxarm
+  pacman-key --verify "$ARCHIVE_SIG" "$ARCHIVE"
   pacman -Syu --noconfirm
   pacman -S --needed --noconfirm \
     base linux-aarch64 linux-firmware mkinitcpio grub efibootmgr \
