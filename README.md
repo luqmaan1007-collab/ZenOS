@@ -17,10 +17,10 @@ ZenOS is an Arch Linux-based desktop distribution project targeting x86-64 PCs a
 
 | Format | ZenOS handling |
 |---|---|
-| .pkg.tar.zst | Native Arch package via pacman |
+| .pkg.tar.zst / .pkg.tar.xz | Native Arch package via pacman |
 | Flatpak / .flatpakref | Native via Flatpak and Discover |
 | .AppImage | Launch with FUSE/runtime dependencies as required |
-| .exe | Wine; Windows compatibility is application-specific |
+| .exe / .msi | Wine; Windows compatibility is application-specific |
 | .apk | Optional Waydroid; requires compatible kernel, graphics and session |
 | .dmg / .app | macOS application binaries are not Linux binaries; not natively installable |
 | .deb / .rpm | Not native; prefer a Flatpak or Arch package |
