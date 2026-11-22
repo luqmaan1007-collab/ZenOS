@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ZenOS Welcome
+Comment=Quick access to your applications, settings and installer
+Exec=zenos-welcome
+Icon=preferences-desktop-theme
+Terminal=false
+Categories=System;Utility;
