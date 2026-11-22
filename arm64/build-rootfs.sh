@@ -40,7 +40,7 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
     base linux-aarch64 linux-firmware \
     plasma-meta plasma-wayland-session sddm breeze \
     firefox dolphin dolphin-plugins kio-extras konsole kate okular kcalc \
-    discover flatpak packagekit-qt6 kdeconnect kde-gtk-config sddm-kcm \
+    discover flatpak packagekit packagekit-qt6 kdeconnect kde-gtk-config sddm-kcm \
     plasma-nm plasma-pa plasma-firewall plasma-systemmonitor polkit-kde-agent \
     networkmanager wpa_supplicant iwd pipewire pipewire-alsa pipewire-pulse wireplumber \
     bluez bluez-utils sudo nano vim git openssh rsync curl wget \
