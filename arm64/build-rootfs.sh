@@ -39,11 +39,15 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
   pacman -S --needed --noconfirm \
     base linux-aarch64 linux-firmware \
     plasma-meta plasma-wayland-session sddm breeze \
-    firefox dolphin konsole discover flatpak packagekit-qt6 \
-    networkmanager wpa_supplicant iwd pipewire pipewire-alsa pipewire-pulse wireplumber \
-    bluez bluez-utils sudo nano vim git curl wget \
-    xdg-user-dirs xdg-utils xdg-desktop-portal xdg-desktop-portal-kde \
-    ark spectacle cups power-profiles-daemon unzip p7zip file htop
+    firefox dolphin dolphin-plugins kio-extras konsole kate okular kcalc \
+    discover flatpak packagekit-qt6 kdeconnect kde-gtk-config sddm-kcm \
+    networkmanager plasma-nm wpa_supplicant iwd pipewire pipewire-alsa pipewire-pulse wireplumber \
+    bluez bluez-utils sudo nano vim git openssh rsync curl wget \
+    xdg-user-dirs xdg-utils xdg-desktop-portal xdg-desktop-portal-kde xdg-desktop-portal-gtk \
+    ark spectacle partitionmanager cups system-config-printer avahi nss-mdns \
+    power-profiles-daemon upower udisks2 gvfs gvfs-mtp gvfs-smb \
+    fwupd unzip p7zip file htop btop man-db man-pages bash-completion \
+    sane simple-scan v4l-utils
   locale-gen
 '
 install -m 0755 scripts/zenos-app "$DEST/usr/local/bin/zenos-app"
