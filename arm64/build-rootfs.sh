@@ -45,13 +45,13 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
     discover flatpak packagekit packagekit-qt6 kdeconnect kde-gtk-config sddm-kcm \
     plasma-nm plasma-pa plasma-firewall plasma-systemmonitor polkit-kde-agent \
     networkmanager wpa_supplicant iwd pipewire pipewire-alsa pipewire-pulse wireplumber \
-    bluez bluez-utils sudo nano vim git openssh rsync curl wget \
+    bluez bluez-utils sudo nano vim git openssh rsync curl wget alsa-utils \
     xdg-user-dirs xdg-utils xdg-desktop-portal xdg-desktop-portal-kde xdg-desktop-portal-gtk \
     ark spectacle partitionmanager cups system-config-printer avahi nss-mdns \
     firewalld power-profiles-daemon upower udisks2 gvfs gvfs-mtp gvfs-smb gvfs-gphoto2 \
     fwupd unzip 7zip file htop btop fastfetch man-db man-pages bash-completion zsh fish \
     e2fsprogs dosfstools btrfs-progs exfatprogs ntfs-3g f2fs-tools \
-    sane simple-scan v4l-utils libcamera
+    sane simple-scan v4l-utils libcamera usbutils pciutils dmidecode smartmontools nvme-cli
   locale-gen
   passwd -l root
   userdel -r alarm || true
