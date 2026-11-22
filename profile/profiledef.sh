@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 iso_name="zenos"
-iso_label="ZENOS_$(date +%Y%m)"
+iso_label="zenos"
 iso_publisher="ZenOS Project"
 iso_application="ZenOS Arch Linux desktop preview"
 iso_version="$(date +%Y.%m.%d)"
