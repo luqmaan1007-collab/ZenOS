@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=ZenOS desktop setup
+Comment=Apply the ZenGlass wallpaper and desktop effects once
+Exec=/usr/local/bin/zenos-desktop-first-login
+OnlyShowIn=KDE;
+X-KDE-autostart-phase=1
