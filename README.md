@@ -2,11 +2,11 @@
 
 ZenOS is an Arch Linux-based desktop distribution project targeting x86-64 PCs and ARM64 devices. Its design goal is a polished, translucent Liquid Glass desktop with a complete everyday desktop stack.
 
-> **Status: engineering preview.** A successful CI build is not proof of hardware compatibility or production readiness. ARM64 is built as a generic root filesystem until a specific board and boot firmware are selected and tested.
+> **Status: engineering preview.** A successful CI build is not proof of hardware compatibility or production readiness. ARM64 includes a generic UEFI-computer image and rootfs archive; single-board computers still need board-specific ports.
 
 ## Current design
 
-- KDE Plasma 6 desktop, Wayland session, SDDM, Plasma Welcome, default ZenGlass colors, KWin blur settings and dark GTK defaults.
+- KDE Plasma 6 desktop, Wayland session, SDDM, Plasma Welcome, a custom ZenGlass wallpaper, default ZenGlass colors, KWin blur settings and dark GTK defaults.
 - Firefox browser, Dolphin file manager, Konsole terminal, Discover software center, Kate editor, Okular PDF viewer, calculator and MPV media player.
 - Arch packages through pacman; Flatpak/Flathub; AppImage; Windows applications through Wine (compatibility varies).
 - Optional Android APK support through Waydroid on compatible kernels and hardware.
@@ -20,7 +20,7 @@ ZenOS is an Arch Linux-based desktop distribution project targeting x86-64 PCs a
 | .pkg.tar.zst / .pkg.tar.xz | Native Arch package via pacman |
 | Flatpak / .flatpakref | Native via Flatpak and Discover |
 | .AppImage | Launch with FUSE/runtime dependencies as required |
-| .exe / .msi | Wine; Windows compatibility is application-specific |
+| .exe / .msi | Wine on x86-64 only; Windows compatibility is application-specific |
 | .apk | Optional Waydroid; requires compatible kernel, graphics and session |
 | .dmg / .app | macOS application binaries are not Linux binaries; not natively installable |
 | .deb / .rpm | Not native; prefer a Flatpak or Arch package |
