@@ -25,5 +25,11 @@ install -d -m 0750 /etc/sudoers.d
 printf '%%wheel ALL=(ALL:ALL) ALL\n' > /etc/sudoers.d/10-wheel
 chmod 0440 /etc/sudoers.d/10-wheel
 visudo -cf /etc/sudoers.d/10-wheel
+if command -v flatpak >/dev/null 2>&1; then
+  if command -v runuser >/dev/null 2>&1; then
+    runuser -u "$username" -- flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo || \
+      echo "Flathub could not be reached yet. Add it later from Discover or the terminal."
+  fi
+fi
 touch "$DONE"
 echo "Account created. You can now sign in to the ZenOS desktop."
