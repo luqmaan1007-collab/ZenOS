@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if [[ $EUID -ne 0 ]]; then
+  echo "The installer needs administrator privileges."
+  exec sudo "$0" "$@"
+fi
+if ! command -v archinstall >/dev/null 2>&1; then
+  echo "archinstall is not installed. Use this command from the ZenOS live ISO."
+  exit 1
+fi
+echo "ZenOS currently launches the upstream Archinstall guided installer."
+echo "Review every disk and partition choice carefully; installation can erase data."
+exec archinstall "$@"
