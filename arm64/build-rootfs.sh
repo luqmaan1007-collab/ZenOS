@@ -52,11 +52,11 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
   locale-gen
   passwd -l root
   userdel -r alarm || true
-  rm -f /etc/systemd/system/multi-user.target.wants/sshd.service
-  rm -f /etc/systemd/system/sockets.target.wants/sshd.socket
-  rm -f /etc/systemd/system/multi-user.target.wants/systemd-networkd.service
-  rm -f /etc/systemd/system/multi-user.target.wants/systemd-networkd-wait-online.service
-  rm -f /etc/systemd/system/multi-user.target.wants/systemd-resolved.service
+  find /etc/systemd/system -type l -name sshd.service -delete
+  find /etc/systemd/system -type l -name sshd.socket -delete
+  find /etc/systemd/system -type l -name systemd-networkd.service -delete
+  find /etc/systemd/system -type l -name systemd-networkd-wait-online.service -delete
+  find /etc/systemd/system -type l -name systemd-resolved.service -delete
   rm -f /etc/resolv.conf
   touch /etc/resolv.conf
 '
