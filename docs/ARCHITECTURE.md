@@ -8,7 +8,7 @@ ZenOS is a curated Arch Linux-based distribution, not a new kernel or an indepen
 
 - Archiso creates a bootable live ISO.
 - The image includes Linux, firmware, KDE Plasma 6, SDDM and a Wayland session.
-- The live image carries the ZenGlass color scheme, KWin blur defaults, GTK dark defaults and application launchers.
+- The live image carries the ZenGlass wallpaper, color scheme, KWin blur defaults, GTK dark defaults and application launchers.
 - A first-boot account service creates the local administrator before the graphical login.
 - The guided installer currently launches upstream archinstall; it is not yet a custom branded installer.
 
@@ -24,7 +24,7 @@ KDE Plasma provides the shell, settings, panels, notifications, file manager int
 
 ## Application compatibility
 
-Native software uses pacman/Discover or Flatpak. AppImage is launched directly. Wine is used for Windows EXE/MSI applications where compatible. Waydroid is optional for APKs and requires kernel and graphics support. macOS DMG/APP binaries are not Linux executables and are not natively supported.
+Native software uses pacman/Discover or Flatpak. AppImage is launched directly. Wine is used for Windows EXE/MSI applications on x86-64 where compatible; it is not included in the ARM64 image. Waydroid is optional for APKs and requires kernel and graphics support. macOS DMG/APP binaries are not Linux executables and are not natively supported.
 
 ## Build pipeline
 
