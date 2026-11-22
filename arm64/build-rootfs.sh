@@ -39,7 +39,7 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
   pacman-key --populate archlinuxarm
   pacman -Syu --noconfirm
   pacman -S --needed --noconfirm \
-    base linux-aarch64 linux-firmware grub efibootmgr \
+    base linux-aarch64 linux-firmware mkinitcpio grub efibootmgr \
     plasma-meta plasma-welcome plasma-workspace-wallpapers sddm breeze kdialog papirus-icon-theme noto-fonts noto-fonts-emoji \
     firefox mpv dolphin dolphin-plugins kio-extras konsole kate okular kcalc \
     discover flatpak packagekit packagekit-qt6 kde-gtk-config sddm-kcm \
