@@ -18,6 +18,7 @@ while true; do
   [[ ${#password} -ge 12 && "$password" == "$confirm" ]] || { echo "Passwords must match and be at least 12 characters."; continue; }
   break
 done
+for group in wheel audio video storage; do groupadd --force "$group"; done
 useradd --create-home --groups wheel,audio,video,storage --shell /bin/bash "$username"
 printf '%s:%s\n' "$username" "$password" | chpasswd
 unset password confirm
