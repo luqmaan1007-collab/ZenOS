@@ -40,7 +40,7 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
   pacman -Syu --noconfirm
   pacman -S --needed --noconfirm \
     base linux-aarch64 linux-firmware grub efibootmgr \
-    plasma-meta plasma-welcome plasma-workspace-wallpapers sddm breeze \
+    plasma-meta plasma-welcome plasma-workspace-wallpapers sddm breeze kdialog papirus-icon-theme noto-fonts noto-fonts-emoji \
     firefox mpv dolphin dolphin-plugins kio-extras konsole kate okular kcalc \
     discover flatpak packagekit packagekit-qt6 kdeconnect kde-gtk-config sddm-kcm \
     plasma-nm plasma-pa plasma-firewall plasma-systemmonitor polkit-kde-agent \
@@ -68,6 +68,7 @@ install -m 0755 scripts/zenos-app "$DEST/usr/local/bin/zenos-app"
 install -m 0755 scripts/zenos-firstboot "$DEST/usr/local/sbin/zenos-firstboot"
 install -m 0755 scripts/zenos-theme-apply "$DEST/usr/local/bin/zenos-theme-apply"
 install -m 0755 scripts/zenos-desktop-first-login "$DEST/usr/local/bin/zenos-desktop-first-login"
+install -m 0755 scripts/zenos-welcome "$DEST/usr/local/bin/zenos-welcome"
 install -m 0644 overlay/etc/systemd/system/zenos-firstboot-tty.service "$DEST/etc/systemd/system/zenos-firstboot-tty.service"
 install -m 0644 overlay/etc/zenos-release "$DEST/etc/zenos-release"
 mkdir -p "$DEST/etc/skel"
@@ -75,6 +76,7 @@ cp -a overlay/etc/skel/. "$DEST/etc/skel/"
 install -m 0644 overlay/usr/share/applications/zenos-browser.desktop "$DEST/usr/share/applications/"
 install -m 0644 overlay/usr/share/applications/zenos-store.desktop "$DEST/usr/share/applications/"
 install -m 0644 overlay/usr/share/applications/zenos-theme.desktop "$DEST/usr/share/applications/"
+install -m 0644 overlay/usr/share/applications/zenos-welcome.desktop "$DEST/usr/share/applications/"
 install -m 0644 overlay/usr/share/color-schemes/ZenGlass.colors "$DEST/usr/share/color-schemes/ZenGlass.colors"
 mkdir -p "$DEST/usr/share/wallpapers/ZenGlass/contents/images"
 install -m 0644 overlay/usr/share/wallpapers/ZenGlass/metadata.json "$DEST/usr/share/wallpapers/ZenGlass/metadata.json"
