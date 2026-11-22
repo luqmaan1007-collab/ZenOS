@@ -7,7 +7,6 @@ archinstall
 plasma-meta
 plasma-welcome
 plasma-workspace-wallpapers
-plasma-wayland-session
 sddm
 breeze
 breeze-gtk
