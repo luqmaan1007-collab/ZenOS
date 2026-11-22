@@ -2,6 +2,8 @@
 set -euo pipefail
 command -v kwriteconfig6 >/dev/null || { echo "Run this from a KDE Plasma 6 session."; exit 1; }
 kwriteconfig6 --file kdeglobals --group General --key ColorScheme ZenGlass
+kwriteconfig6 --file kdeglobals --group General --key font "Noto Sans,10,-1,5,50,0,0,0,0,0"
+kwriteconfig6 --file kdeglobals --group Icons --key Theme Papirus-Dark
 kwriteconfig6 --file kwinrc --group Plugins --key blurEnabled true
 kwriteconfig6 --file kwinrc --group Effect-blur --key BlurStrength 8
 kwriteconfig6 --file kwinrc --group Effect-blur --key NoiseStrength 0
