@@ -17,7 +17,10 @@ ID=zenos
 ID_LIKE=arch
 BUILD_ID=development
 RELEASE
-mkdir -p "$DEST/var/lib/zenos" "$DEST/usr/local/bin" "$DEST/usr/local/sbin" "$DEST/etc/systemd/system"
+mkdir -p "$DEST/var/lib/zenos" "$DEST/usr/local/bin" "$DEST/usr/local/sbin" \
+  "$DEST/etc/systemd/system/multi-user.target.wants" \
+  "$DEST/etc/systemd/system/graphical.target.wants" \
+  "$DEST/usr/share/applications" "$DEST/usr/share/color-schemes"
 mount --bind /dev "$DEST/dev"
 mount --bind /dev/pts "$DEST/dev/pts"
 mount -t proc proc "$DEST/proc"
@@ -41,9 +44,7 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
     bluez bluez-utils sudo nano vim git curl wget \
     xdg-user-dirs xdg-utils xdg-desktop-portal xdg-desktop-portal-kde \
     ark spectacle cups power-profiles-daemon unzip p7zip file htop
-  systemctl enable NetworkManager.service
-  systemctl enable bluetooth.service
-  systemctl enable sddm.service
+  locale-gen
 '
 install -m 0755 scripts/zenos-app "$DEST/usr/local/bin/zenos-app"
 install -m 0755 scripts/zenos-install "$DEST/usr/local/bin/zenos-install"
@@ -52,4 +53,8 @@ install -m 0755 scripts/zenos-theme-apply "$DEST/usr/local/bin/zenos-theme-apply
 install -m 0644 overlay/etc/systemd/system/zenos-firstboot-tty.service "$DEST/etc/systemd/system/zenos-firstboot-tty.service"
 install -m 0644 overlay/etc/zenos-release "$DEST/etc/zenos-release"
 install -m 0644 overlay/usr/share/applications/*.desktop "$DEST/usr/share/applications/"
-chroot "$DEST" systemctl enable zenos-firstboot-tty.service
+install -m 0644 overlay/usr/share/color-schemes/ZenGlass.colors "$DEST/usr/share/color-schemes/ZenGlass.colors"
+ln -sfn /usr/lib/systemd/system/NetworkManager.service "$DEST/etc/systemd/system/multi-user.target.wants/NetworkManager.service"
+ln -sfn /usr/lib/systemd/system/bluetooth.service "$DEST/etc/systemd/system/multi-user.target.wants/bluetooth.service"
+ln -sfn /etc/systemd/system/zenos-firstboot-tty.service "$DEST/etc/systemd/system/multi-user.target.wants/zenos-firstboot-tty.service"
+ln -sfn /usr/lib/systemd/system/sddm.service "$DEST/etc/systemd/system/graphical.target.wants/sddm.service"
