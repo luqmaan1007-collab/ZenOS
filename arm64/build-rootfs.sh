@@ -29,6 +29,8 @@ mkdir -p "$DEST/var/lib/zenos" "$DEST/usr/local/bin" "$DEST/usr/local/sbin" \
   "$DEST/etc/systemd/system/multi-user.target.wants" \
   "$DEST/etc/systemd/system/graphical.target.wants" \
   "$DEST/usr/share/applications" "$DEST/usr/share/color-schemes" "$DEST/dev/pts" "$DEST/proc" "$DEST/sys"
+mkdir -p "$DEST/run/zenos-downloads"
+mount --bind "$RUNNER_TEMP" "$DEST/run/zenos-downloads"
 mount --bind /dev "$DEST/dev"
 mount --bind /dev/pts "$DEST/dev/pts"
 mount -t proc proc "$DEST/proc"
@@ -38,12 +40,13 @@ cleanup() {
   umount -lf "$DEST/dev" || true
   umount -lf "$DEST/proc" || true
   umount -lf "$DEST/sys" || true
+  umount -lf "$DEST/run/zenos-downloads" || true
 }
 trap cleanup EXIT
 chroot "$DEST" /bin/bash -euo pipefail -c '
   pacman-key --init
   pacman-key --populate archlinuxarm
-  pacman-key --verify "$ARCHIVE_SIG" "$ARCHIVE"
+  pacman-key --verify /run/zenos-downloads/ArchLinuxARM-aarch64-latest.tar.gz.sig /run/zenos-downloads/ArchLinuxARM-aarch64-latest.tar.gz
   pacman -Syu --noconfirm
   pacman -S --needed --noconfirm \
     base linux-aarch64 linux-firmware mkinitcpio grub efibootmgr \
