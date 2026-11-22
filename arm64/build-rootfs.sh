@@ -48,7 +48,7 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
     bluez bluez-utils sudo nano vim git openssh rsync curl wget alsa-utils \
     xdg-user-dirs xdg-utils xdg-desktop-portal xdg-desktop-portal-kde xdg-desktop-portal-gtk \
     ark spectacle partitionmanager firewalld power-profiles-daemon upower udisks2 \
-    gvfs gvfs-mtp gvfs-smb unzip 7zip file htop btop fastfetch man-db man-pages bash-completion zsh fish \
+    gvfs gvfs-mtp gvfs-smb fuse2 fuse3 unzip 7zip file htop btop fastfetch man-db man-pages bash-completion zsh fish \
     e2fsprogs dosfstools btrfs-progs exfatprogs ntfs-3g f2fs-tools
   optional=(kdeconnect cups system-config-printer avahi nss-mdns gvfs-gphoto2 fwupd sane simple-scan v4l-utils libcamera usbutils pciutils dmidecode smartmontools nvme-cli)
   available=()
