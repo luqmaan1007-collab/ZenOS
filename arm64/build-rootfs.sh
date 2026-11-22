@@ -83,3 +83,4 @@ ln -sfn /usr/lib/systemd/system/firewalld.service "$DEST/etc/systemd/system/mult
 ln -sfn /usr/lib/systemd/system/systemd-timesyncd.service "$DEST/etc/systemd/system/multi-user.target.wants/systemd-timesyncd.service"
 ln -sfn /etc/systemd/system/zenos-firstboot-tty.service "$DEST/etc/systemd/system/multi-user.target.wants/zenos-firstboot-tty.service"
 ln -sfn /usr/lib/systemd/system/sddm.service "$DEST/etc/systemd/system/graphical.target.wants/sddm.service"
+ln -sfn /usr/lib/systemd/system/sddm.service "$DEST/etc/systemd/system/display-manager.service"
