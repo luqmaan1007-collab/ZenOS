@@ -38,8 +38,8 @@ chroot "$DEST" /bin/bash -euo pipefail -c '
   pacman -Syu --noconfirm
   pacman -S --needed --noconfirm \
     base linux-aarch64 linux-firmware grub efibootmgr \
-    plasma-meta plasma-wayland-session sddm breeze \
-    firefox dolphin dolphin-plugins kio-extras konsole kate okular kcalc \
+    plasma-meta plasma-welcome plasma-workspace-wallpapers plasma-wayland-session sddm breeze \
+    firefox mpv dolphin dolphin-plugins kio-extras konsole kate okular kcalc \
     discover flatpak packagekit packagekit-qt6 kdeconnect kde-gtk-config sddm-kcm \
     plasma-nm plasma-pa plasma-firewall plasma-systemmonitor polkit-kde-agent \
     networkmanager wpa_supplicant iwd pipewire pipewire-alsa pipewire-pulse wireplumber \
@@ -65,6 +65,8 @@ install -m 0755 scripts/zenos-firstboot "$DEST/usr/local/sbin/zenos-firstboot"
 install -m 0755 scripts/zenos-theme-apply "$DEST/usr/local/bin/zenos-theme-apply"
 install -m 0644 overlay/etc/systemd/system/zenos-firstboot-tty.service "$DEST/etc/systemd/system/zenos-firstboot-tty.service"
 install -m 0644 overlay/etc/zenos-release "$DEST/etc/zenos-release"
+mkdir -p "$DEST/etc/skel"
+cp -a overlay/etc/skel/. "$DEST/etc/skel/"
 install -m 0644 overlay/usr/share/applications/zenos-browser.desktop "$DEST/usr/share/applications/"
 install -m 0644 overlay/usr/share/applications/zenos-store.desktop "$DEST/usr/share/applications/"
 install -m 0644 overlay/usr/share/applications/zenos-theme.desktop "$DEST/usr/share/applications/"
