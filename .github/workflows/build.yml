@@ -28,7 +28,11 @@ jobs:
           bash -n profile/profiledef.sh
           bash -n arm64/build-rootfs.sh
           bash -n arm64/build-uefi-image.sh
+          bash -n scripts/zenos-welcome
           for script in scripts/*; do bash -n "$script"; done
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          shellcheck scripts/* arm64/*.sh
       - name: Check whitespace errors
         run: git diff --check
   x86_64:
@@ -57,6 +61,7 @@ jobs:
             install -m 0755 /work/scripts/zenos-firstboot /tmp/zenos-profile/airootfs/usr/local/sbin/zenos-firstboot
             install -m 0755 /work/scripts/zenos-theme-apply /tmp/zenos-profile/airootfs/usr/local/bin/zenos-theme-apply
             install -m 0755 /work/scripts/zenos-desktop-first-login /tmp/zenos-profile/airootfs/usr/local/bin/zenos-desktop-first-login
+            install -m 0755 /work/scripts/zenos-welcome /tmp/zenos-profile/airootfs/usr/local/bin/zenos-welcome
             install -d /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants /tmp/zenos-profile/airootfs/etc/systemd/system/graphical.target.wants
             ln -sf /usr/lib/systemd/system/NetworkManager.service /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants/NetworkManager.service
             ln -sf /usr/lib/systemd/system/bluetooth.service /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants/bluetooth.service
