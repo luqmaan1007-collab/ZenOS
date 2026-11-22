@@ -2,16 +2,24 @@
 set -euo pipefail
 DEST=${1:?Usage: build-rootfs.sh DESTINATION}
 : "${RUNNER_TEMP:=$(mktemp -d)}"
-# Arch Linux ARM's download page publishes the official tarball and detached
-# signature. Use its HTTP redirector because the origin's TLS certificate
-# currently fails hostname validation; authenticate the payload with GPG
-# before running anything from the extracted root filesystem.
+# Arch Linux ARM publishes a detached signature for this root filesystem.
+# The origin's TLS certificate currently fails hostname validation, so use
+# the official HTTP redirector and authenticate the archive with the pinned
+# upstream signing-key fingerprint before extracting any files.
 ARCHROOT_URL="http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz"
 ARCHIVE="$RUNNER_TEMP/ArchLinuxARM-aarch64-latest.tar.gz"
 ARCHIVE_SIG="$ARCHIVE.sig"
 mkdir -p "$DEST"
 curl --fail --location --retry 5 --retry-all-errors --retry-delay 3 "$ARCHROOT_URL" -o "$ARCHIVE"
 curl --fail --location --retry 5 --retry-all-errors --retry-delay 3 "${ARCHROOT_URL}.sig" -o "$ARCHIVE_SIG"
+command -v gpg >/dev/null || { echo "gpg is required to verify the official Arch Linux ARM rootfs" >&2; exit 1; }
+GNUPGHOME="$RUNNER_TEMP/zenos-gnupg"
+mkdir -m 0700 -p "$GNUPGHOME"
+export GNUPGHOME
+gpg --batch --keyserver hkps://keyserver.ubuntu.com --recv-keys 68B3537F39A313B3E574D06777193F152BDBE6A6
+FINGERPRINT="$(gpg --batch --with-colons --fingerprint 68B3537F39A313B3E574D06777193F152BDBE6A6 | awk -F: '$1 == "fpr" { print $10; exit }')"
+[[ "$FINGERPRINT" == "68B3537F39A313B3E574D06777193F152BDBE6A6" ]] || { echo "Arch Linux ARM signing-key fingerprint mismatch" >&2; exit 1; }
+gpg --batch --verify "$ARCHIVE_SIG" "$ARCHIVE"
 tar -xpf "$ARCHIVE" -C "$DEST" --numeric-owner
 rm -f "$DEST/etc/resolv.conf"
 cp --dereference /etc/resolv.conf "$DEST/etc/resolv.conf"
@@ -29,8 +37,6 @@ mkdir -p "$DEST/var/lib/zenos" "$DEST/usr/local/bin" "$DEST/usr/local/sbin" \
   "$DEST/etc/systemd/system/multi-user.target.wants" \
   "$DEST/etc/systemd/system/graphical.target.wants" \
   "$DEST/usr/share/applications" "$DEST/usr/share/color-schemes" "$DEST/dev/pts" "$DEST/proc" "$DEST/sys"
-mkdir -p "$DEST/run/zenos-downloads"
-mount --bind "$RUNNER_TEMP" "$DEST/run/zenos-downloads"
 mount --bind /dev "$DEST/dev"
 mount --bind /dev/pts "$DEST/dev/pts"
 mount -t proc proc "$DEST/proc"
@@ -40,13 +46,11 @@ cleanup() {
   umount -lf "$DEST/dev" || true
   umount -lf "$DEST/proc" || true
   umount -lf "$DEST/sys" || true
-  umount -lf "$DEST/run/zenos-downloads" || true
 }
 trap cleanup EXIT
 chroot "$DEST" /bin/bash -euo pipefail -c '
   pacman-key --init
   pacman-key --populate archlinuxarm
-  pacman-key --verify /run/zenos-downloads/ArchLinuxARM-aarch64-latest.tar.gz.sig /run/zenos-downloads/ArchLinuxARM-aarch64-latest.tar.gz
   pacman -Syu --noconfirm
   pacman -S --needed --noconfirm \
     base linux-aarch64 linux-firmware mkinitcpio grub efibootmgr \
