@@ -2,6 +2,7 @@
 
 ## Engineering preview
 - [x] Arch Linux desktop baseline and remote build definitions
+- [x] Generic ARM64 UEFI disk-image builder and rootfs archive target
 - [x] Firefox, Discover, Flatpak, networking, audio, Bluetooth and printing package selection
 - [x] Initial ZenGlass KDE color scheme and KWin blur configuration
 - [x] First-boot local administrator account prompt (requires boot validation)
