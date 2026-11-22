@@ -9,6 +9,7 @@ on:
       - "arm64/**"
       - "overlay/**"
       - "scripts/**"
+      - "docs/**"
       - "README.md"
 permissions:
   contents: read
@@ -16,8 +17,22 @@ concurrency:
   group: zenos-build-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  validate:
+    name: Validate scripts and profile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check shell syntax
+        run: |
+          set -euo pipefail
+          bash -n profile/profiledef.sh
+          bash -n arm64/build-rootfs.sh
+          for script in scripts/*; do bash -n "$script"; done
+      - name: Check whitespace errors
+        run: git diff --check
   x86_64:
     name: x86-64 live ISO
+    needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -50,6 +65,7 @@ jobs:
           compression-level: 0
   aarch64:
     name: ARM64 Arch Linux ARM rootfs
+    needs: validate
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 120
     steps:
