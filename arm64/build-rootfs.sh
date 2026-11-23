@@ -54,7 +54,10 @@ trap cleanup EXIT
 chroot "$DEST" /bin/bash -euo pipefail -c '
   pacman-key --init
   pacman-key --populate archlinuxarm
-  pacman -Syu --noconfirm
+  # Firmware bundles are very large; retain the bootstrap firmware to keep the
+  # ARM runner within its disk budget while upgrading the userspace and kernel.
+  pacman -Syu --noconfirm \
+    --ignore linux-firmware,linux-firmware-amd,linux-firmware-amdgpu,linux-firmware-atheros,linux-firmware-broadcom,linux-firmware-cirrus,linux-firmware-intel,linux-firmware-mediatek,linux-firmware-nvidia,linux-firmware-other,linux-firmware-radeon,linux-firmware-realtek,linux-firmware-ti,linux-firmware-whence
   # Do not keep the bootstrap upgrade packages while downloading the desktop.
   pacman -Scc --noconfirm
   pacman -S --needed --noconfirm \
