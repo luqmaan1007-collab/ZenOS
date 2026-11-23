@@ -47,7 +47,7 @@ jobs:
           set -euo pipefail
           mkdir -p out
           docker run --interactive --rm --privileged -v "$GITHUB_WORKSPACE:/work" -w /work archlinux:latest bash -euo pipefail -s <<'ARCHISO'
-            pacman -Syu --noconfirm archiso
+            pacman -Syu --noconfirm archiso mkinitcpio
             mkdir -p /tmp/zenos-profile
             cp -a /usr/share/archiso/configs/releng/. /tmp/zenos-profile/
             cp /work/profile/profiledef.sh /tmp/zenos-profile/profiledef.sh
