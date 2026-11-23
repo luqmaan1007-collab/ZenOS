@@ -58,6 +58,28 @@ jobs:
             install -D -m 0644 /work/profile/airootfs/etc/mkinitcpio.conf.d/archiso.conf /tmp/zenos-profile/airootfs/etc/mkinitcpio.conf.d/archiso.conf
             grep -Eq '^HOOKS=.*archiso.*archiso_loop_mnt' /tmp/zenos-profile/airootfs/etc/mkinitcpio.conf.d/archiso.conf
             grep -Eq '^MODULES=.*squashfs.*loop' /tmp/zenos-profile/airootfs/etc/mkinitcpio.conf.d/archiso.conf
+
+            # Add a dedicated Limbo boot entry using its emulated CD-ROM device.
+            printf '%s\\n' \
+              'LABEL zenos-limbo' \
+              'TEXT HELP' \
+              'Boot ZenOS in Limbo using its emulated CD-ROM device.' \
+              'ENDTEXT' \
+              'MENU LABEL ZenOS (Limbo CD-ROM)' \
+              'LINUX /%INSTALL_DIR%/boot/%ARCH%/vmlinuz-linux' \
+              'INITRD /%INSTALL_DIR%/boot/%ARCH%/initramfs-linux.img' \
+              'APPEND archisobasedir=%INSTALL_DIR% archisodevice=/dev/sr0' \
+              >> /tmp/zenos-profile/syslinux/archiso_sys-linux.cfg
+            sed -i 's/^DEFAULT arch$/DEFAULT zenos-limbo/' /tmp/zenos-profile/syslinux/archiso_sys.cfg
+
+            printf '%s\\n' \
+              'title ZenOS (Limbo CD-ROM)' \
+              'sort-key 00' \
+              'linux /%INSTALL_DIR%/boot/%ARCH%/vmlinuz-linux' \
+              'initrd /%INSTALL_DIR%/boot/%ARCH%/initramfs-linux.img' \
+              'options archisobasedir=%INSTALL_DIR% archisodevice=/dev/sr0' \
+              > /tmp/zenos-profile/efiboot/loader/entries/00-zenos-limbo.conf
+            sed -i 's/^default .*/default 00-zenos-limbo.conf/' /tmp/zenos-profile/efiboot/loader/loader.conf
             install -d /tmp/zenos-profile/airootfs/usr/local/bin /tmp/zenos-profile/airootfs/usr/local/sbin
             install -m 0755 /work/scripts/zenos-app /tmp/zenos-profile/airootfs/usr/local/bin/zenos-app
             install -m 0755 /work/scripts/zenos-install /tmp/zenos-profile/airootfs/usr/local/bin/zenos-install
@@ -76,6 +98,17 @@ jobs:
             ln -sf /usr/lib/systemd/system/sddm.service /tmp/zenos-profile/airootfs/etc/systemd/system/display-manager.service
             ln -sf /etc/systemd/system/zenos-firstboot-tty.service /tmp/zenos-profile/airootfs/etc/systemd/system/multi-user.target.wants/zenos-firstboot-tty.service
             mkarchiso -v -w /tmp/archiso-work -o /work/out /tmp/zenos-profile
+
+            # Validate the root image path and initramfs contents before publishing.
+            iso="$(find /work/out -maxdepth 1 -type f -name '*.iso' -print -quit)"
+            test -n "$iso"
+            xorriso -indev "$iso" -ls /zenos/x86_64/
+            xorriso -osirrox on -indev "$iso" -extract /zenos/x86_64/airootfs.sfs /tmp/zenos-airootfs.sfs
+            unsquashfs -s /tmp/zenos-airootfs.sfs
+            xorriso -osirrox on -indev "$iso" -extract /zenos/boot/x86_64/initramfs-linux.img /tmp/zenos-initramfs.img
+            lsinitcpio -l /tmp/zenos-initramfs.img | grep -E 'hooks/archiso|squashfs|loop'
+            grep -q 'archisodevice=/dev/sr0' /tmp/zenos-profile/syslinux/archiso_sys-linux.cfg
+            grep -q 'archisodevice=/dev/sr0' /tmp/zenos-profile/efiboot/loader/entries/00-zenos-limbo.conf
           '
           sha256sum out/*.iso > out/SHA256SUMS
       - uses: actions/upload-artifact@v4
