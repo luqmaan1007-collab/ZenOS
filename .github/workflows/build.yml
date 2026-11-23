@@ -60,7 +60,7 @@ jobs:
             grep -Eq '^MODULES=.*squashfs.*loop' /tmp/zenos-profile/airootfs/etc/mkinitcpio.conf.d/archiso.conf
 
             # Add a dedicated Limbo boot entry using its emulated CD-ROM device.
-            printf '%s\\n' \
+            printf '%s\n' \
               'LABEL zenos-limbo' \
               'TEXT HELP' \
               'Boot ZenOS in Limbo using its emulated CD-ROM device.' \
@@ -72,7 +72,7 @@ jobs:
               >> /tmp/zenos-profile/syslinux/archiso_sys-linux.cfg
             sed -i 's/^DEFAULT arch$/DEFAULT zenos-limbo/' /tmp/zenos-profile/syslinux/archiso_sys.cfg
 
-            printf '%s\\n' \
+            printf '%s\n' \
               'title ZenOS (Limbo CD-ROM)' \
               'sort-key 00' \
               'linux /%INSTALL_DIR%/boot/%ARCH%/vmlinuz-linux' \
